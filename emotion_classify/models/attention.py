@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class TextAttnRNN(nn.Module):
-    def __init__(self, embedding_matrix, num_classes=2, hidden_size=128, num_layers=2, dropout=0.3):
+    def __init__(self, embedding_matrix, num_classes, hidden_size, num_layers, dropout):
         super(TextAttnRNN, self).__init__()
         self.embedding = nn.Embedding.from_pretrained(embedding_matrix, freeze=False)
         self.embedding_dim = embedding_matrix.size(1)

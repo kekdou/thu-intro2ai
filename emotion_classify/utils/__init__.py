@@ -1,9 +1,11 @@
 import os
 import torch
 import numpy as np
+import pickle
 
 from .preprocess import TextPreprocs
 from .embed import build_embedding_weight
+from .csv2txt import process_csv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TRAIN_PATH = os.path.join(BASE_DIR, "Dataset", "train.txt")
@@ -11,7 +13,13 @@ VAL_PATH = os.path.join(BASE_DIR, "Dataset", "validation.txt")
 TEST_PATH = os.path.join(BASE_DIR, "Dataset", "test.txt")
 STOP_PATH = os.path.join(BASE_DIR, "Dataset", "hit_stopwords.txt")
 W2V_PATH = os.path.join(BASE_DIR, "Dataset", "wiki_word2vec_50.bin")
+
 SAVE_PATH = os.path.join(BASE_DIR, "processed")
+if not os.path.exists(SAVE_PATH):
+    os.makedirs(SAVE_PATH)
+
+CSV_PATH = os.path.join(BASE_DIR, "Dataset", "ChnSentiCorp_htl_all.csv")
+TXT_PATH = os.path.join(BASE_DIR, "Dataset", "ChnSentiCorp_htl_all.txt")
 
 MAX_LEN = 100
 MIN_FREQ = 2
@@ -30,6 +38,13 @@ def check_data_exists():
         os.path.join(SAVE_PATH, "test_y.npy"),
         os.path.join(SAVE_PATH, "embedding_weight.pth"),
         os.path.join(SAVE_PATH, "word_to_id.pkl")
+    ]
+    return all(os.path.exists(f) for f in essential_files)
+
+def check_csv_exists():
+    essential_files = [
+        os.path.join(SAVE_PATH, "csv_x.npy"),
+        os.path.join(SAVE_PATH, "csv_y.npy"),
     ]
     return all(os.path.exists(f) for f in essential_files)
 
@@ -67,3 +82,26 @@ def initialize_data(force_rebuild=False):
     torch.save(embedding_weight, os.path.join(SAVE_PATH, "embedding_weight.pth"))
 
     print(f"数据初始化完成！")
+
+def initialize_csv():
+    if check_csv_exists():
+        return
+    if not os.path.exists(CSV_PATH):
+        print(f"{CSV_PATH} 文件不存在")
+        return
+    if not os.path.exists(TXT_PATH):
+        process_csv(CSV_PATH, TXT_PATH)
+
+    vocab_path = os.path.join(SAVE_PATH, "word_to_id.pkl")
+    processor = TextPreprocs(max_len=MAX_LEN, min_freq=MIN_FREQ)
+    with open(vocab_path, "rb") as f:
+        processor.word_to_id = pickle.load(f)
+    processor.id_to_word = {v: k for k, v in processor.word_to_id.items()}
+    if os.path.exists(STOP_PATH):
+        processor.load_stop_words(STOP_PATH)
+    
+    csv_labels, csv_texts = processor.read_data(TXT_PATH)
+    csv_x = processor.text_to_sequence(csv_texts)
+    csv_y = np.array(csv_labels)
+    save_processed_data(SAVE_PATH, csv_x, csv_y, "csv")
+    print(f"初始化完成！")

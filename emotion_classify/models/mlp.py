@@ -1,12 +1,11 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 class MLP(nn.Module):
-    def __init__(self, embedding_matrix, num_classes=2, hidden_dims=[256, 128], dropout=0.2):
+    def __init__(self, embedding_matrix, num_classes, hidden_dims, dropout):
         super(MLP, self).__init__()
         self.embedding = nn.Embedding.from_pretrained(embedding_matrix, freeze=False)
-        embedding_dim = self.embedding.weight.shape[1]
+        embedding_dim = embedding_matrix.size(1)
         layers = []
         input_dim = embedding_dim
         for h_dim in hidden_dims:

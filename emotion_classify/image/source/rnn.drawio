@@ -1,0 +1,46 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram name="第 1 页" id="BljZUScCO0pVN82vvMM3">
+    <mxGraphModel dx="995" dy="677" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n_in" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;Input Tokens&lt;br&gt;[Batch = 64,&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;Seq_Len = 100]&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="40" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="n_emb" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Embedding&lt;br&gt;[Batch = 64,&amp;nbsp;&lt;div&gt;Seq_Len = 100,&amp;nbsp;&lt;/div&gt;&lt;div&gt;E_dim = 50]&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="130" x="200" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n_in" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="n_emb" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_lstm_f" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Forward LSTM&lt;br&gt;(hidden_size = 128)" vertex="1">
+          <mxGeometry height="50" width="120" x="400" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="n_lstm_b" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Backward LSTM&lt;br&gt;(hidden_size = 128)" vertex="1">
+          <mxGeometry height="50" width="120" x="400" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n_emb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="n_lstm_f">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n_emb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="n_lstm_b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n_concat" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Concatenate&lt;div&gt;Dropout&amp;nbsp; = 0.3&lt;br&gt;[Batch = 64,&amp;nbsp;&lt;/div&gt;&lt;div&gt;hidden_size = 256]&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="580" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n_lstm_f" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="n_concat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n_lstm_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="n_concat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n_fc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Linear&lt;div&gt;[input =256,&amp;nbsp;&lt;/div&gt;&lt;div&gt;output = 2]&lt;br&gt;&lt;div&gt;Output&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="810" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="n_concat" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="n_fc" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

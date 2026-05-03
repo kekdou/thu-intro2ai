@@ -1,0 +1,55 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
+  <diagram name="Page-1" id="ziYcrOWvGFgCC0qEdjwS">
+    <mxGraphModel dx="936" dy="993" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="node_input" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="Input Sequence&lt;br&gt;[Batch=64, Seq_Len=100]" vertex="1">
+          <mxGeometry height="60" width="120" x="40" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="qVoZ-aPIz3ivApnJ9zNN-133" edge="1" parent="1" source="node_emb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="node_conv1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qVoZ-aPIz3ivApnJ9zNN-134" edge="1" parent="1" source="node_emb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="node_conv3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="node_emb" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Embedding Layer&lt;br&gt;[Batch = 64&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Seq_Len = 100&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;E_dim = 50]&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="200" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_1" edge="1" parent="1" source="node_input" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="node_emb" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+        <mxCell id="node_conv1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Conv2d (k=2)&lt;br&gt;ReLU + MaxPool" vertex="1">
+          <mxGeometry height="50" width="120" x="400" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="node_conv2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Conv2d (k=3)&lt;br&gt;ReLU + MaxPool" vertex="1">
+          <mxGeometry height="50" width="120" x="400" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="node_conv3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Conv2d (k=4)&lt;br&gt;ReLU + MaxPool" vertex="1">
+          <mxGeometry height="50" width="120" x="400" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_c2" edge="1" parent="1" source="node_emb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="node_conv2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="node_concat" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Concatenate&lt;div&gt;Dropout = 0.5&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="580" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_f1" edge="1" parent="1" source="node_conv1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="node_concat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_f2" edge="1" parent="1" source="node_conv2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="node_concat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_f3" edge="1" parent="1" source="node_conv3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="node_concat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="node_fc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Linear&lt;div&gt;[input = 300,&amp;nbsp;&lt;/div&gt;&lt;div&gt;output = 2]&lt;br&gt;Output Classes&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="810" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_final" edge="1" parent="1" source="node_concat" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="node_fc" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class TextRNN(nn.Module):
-    def __init__(self, embedding_matrix, num_classes=2, hidden_size=128, num_layers=2, bidirectional=True, dropout=0.3):
+    def __init__(self, embedding_matrix, num_classes, hidden_size, num_layers, bidirectional, dropout):
         super(TextRNN, self).__init__()
         self.embedding = nn.Embedding.from_pretrained(embedding_matrix, freeze=False)
         self.embedding_dim = embedding_matrix.size(1)

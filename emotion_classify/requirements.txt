@@ -1,0 +1,6 @@
+numpy
+pandas
+jieba
+gensim
+scikit-learn
+torch

@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class TextCNN(nn.Module):
-    def __init__(self, embedding_matrix, num_classes=2, filter_sizes=[3, 4, 5], num_filters=100, dropout=0.5):
+    def __init__(self, embedding_matrix, num_classes, filter_sizes, num_filters, dropout):
         super(TextCNN, self).__init__()
         self.embedding = nn.Embedding.from_pretrained(embedding_matrix, freeze=False)
         self.embedding_dim = embedding_matrix.size(1)
